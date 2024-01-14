@@ -20,6 +20,7 @@ const gitToken = process.env.REACT_APP_GIT_TOKEN;
 interface TreeComponentProps {
   treeData: Array<any>;
   treeRef: any;
+  currentFileId: string;
 }
 
 const TreeNode = ({ node, style, dragHandle }: any) => {
@@ -38,7 +39,11 @@ const TreeNode = ({ node, style, dragHandle }: any) => {
   );
 };
 
-const TreeComponent = ({ treeData, treeRef }: TreeComponentProps) => {
+const TreeComponent = ({
+  treeData,
+  treeRef,
+  currentFileId,
+}: TreeComponentProps) => {
   console.log("tree data", treeData);
   console.log("tree ref", treeRef);
   return (
@@ -48,6 +53,7 @@ const TreeComponent = ({ treeData, treeRef }: TreeComponentProps) => {
       data={treeData}
       ref={treeRef}
       height={1000}
+      selection={currentFileId}
     >
       {TreeNode}
     </Tree>
@@ -59,6 +65,8 @@ const App = () => {
   const monacaRef = useRef<any>(null);
   const treeRef = useRef();
   const [treeData, setTreeData] = useState<Array<any>>([]);
+  const [currentSelectedFileId, setCurrentSelectedFileId] =
+    useState<string>("");
 
   useEffect(() => {
     const tree: any = treeRef.current;
@@ -96,7 +104,11 @@ const App = () => {
   return (
     <div className="app">
       <Box className="treecomponent">
-        <TreeComponent treeData={treeData} treeRef={treeRef} />
+        <TreeComponent
+          treeData={treeData}
+          treeRef={treeRef}
+          currentFileId={currentSelectedFileId}
+        />
       </Box>
       <Editor
         className="dalgoeditor"
